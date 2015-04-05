@@ -20,7 +20,8 @@ class(start_time)
 RawData = test.data = read.csv(header=TRUE,file='hurrcine.csv')
 #取出清除空白的資料
 
-newdata2 = cbind(RawData2 = RawData[,1:11],start_time,leave_time)
+newdata2 = cbind(RawData[,1:11],start_time,leave_time)
+head(newdata2)
 #將所要的資料整理再一起
 class(newdata2[,12])
 
