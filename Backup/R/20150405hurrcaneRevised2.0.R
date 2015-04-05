@@ -26,7 +26,9 @@ class(newdata2[,12])
 
 write.csv(newdata2,file='hurrcine2.csv')
 #整理完寫出
+write.xlsx(newdata2,file='hurrcine2.xlsx')
+#整理完寫出
 
-
+class(newdata2[,12])
 
 
