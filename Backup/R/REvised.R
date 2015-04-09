@@ -1,58 +1,75 @@
-
+#±N¥x¤¤²£¦a¸ê®ÆÅªªñ¨Ó
 banana = read.xlsx(header=TRUE,file='Taichung_banana.xlsx',sheetIndex=1,encoding='UTF-8')
-
+#ÀË¬d©Ò»İ¤º®e¦b­ş¸Ì
 head(banana[4:624,2])
-
+#½T»{Äİ©Ê
 str(banana)
-
-revise = banana[4:623,2]
-
-write.csv(revise,file='ttt.csv')
-
+#±N©Ò»İ¤º®e©ñ¤J¤@­ÓÅÜ¼Æ
+revise = banana[4:621,2]
+#½Æ»s¨Ã¦X¨Ö¦¨¤Q­Ó­«½Æªº¼Æ­È(¥ı¹w³]³£¬O30¤Ñ),³o­ÓÅÜ¼Æ±ßÂI·|¦A¥Î¨ì,©È­×§ï¨ì¥i¥H¦sÀÉ³Æ¥Î
 Revised2 = data.frame(revise,revise,revise,revise,revise,revise,revise,revise,revise,revise)
-
-write.csv(Revised2,file='text.csv')
-
-head(Revised2)
-
-lastweek = seq(3,623,3)
-
-Revised2[624,]
-
+#±N½Æ»s«áªºÀÉ®×¦s¥X,³Æ¥Î
+write.csv(Revised2,file='Revised2.xlsx')
+#¥Î¦V¶q¨ú¤U¦¯ªºÄæ¦ì¦ì¸m
+lastweek = seq(3,618,3)
+#¨ú¥X¤U¦¯ªºÄæ¦ì¦ì¸m¦¨¤@­ÓÅÜ¼Æ
 lastmonth = Revised2[lastweek,]
+#¥ı±N²Ä31¤Ñªº¸ê®Æ§ï¦¨999¤è«K­×§ï
+Revised2[,11]=999
+#±N¨ú¥X¤U¦¯ªº¸ê®ÆÀÉ®×¦s¥X,¥ÎEXCEl·s¼W¨â­ÓÄæ¦ì,¤@­Ó¬O¦~,¤@­Ó¬O¤ë¥÷,§@¬°µ¥µ¥§PÂ_¤Ñ¼Æ¥Î
+# EX 1998 1 ...»ù®æ...
+write.csv(lastmonth,file='text23.xlsx')
 
-
-write.csv(lastmonth,file='text2.csv')
-
-average = lastweek/3
-
-Revised2[1,11]
-
-
-
-
-#åˆä½µ
-av = as.vector(t(Revised2))
-
-write.csv(av,file='text.csv')
-
-
-str(av)
-
-
+#Åª¨ú¤w­×§ïªºÀÉ®×
 RDateData = read.xlsx(header=TRUE,file='text23.xlsx',sheetIndex=1,encoding='UTF-8' )
+#ÀË¹îÄİ©Ê
+str(RDateData)
 
-revised = RDateData[,-1]
-
-year = seq(1998,2015,1)
-
-month = seq(1,12,1)
+#¥H¤U´N¬O§PÂ_³Ì«á¤@¤Ñ¤Ñ¼Æªº°j°é,Äæ¦ì¬°1¨ì206,¥Î°j°é¶],¥Ñ²Ä¤@­ÓÄæ¦ì§PÂ_¦~¤À,²Ä¤G­ÓÄæ¦ì§PÂ_¤ë¥÷
 
 
-
-
-
-
+for(i in 1:206){
+x = RDateData[i,1]
+y = RDateData[i,2]
+#¶|¦~§PÂ_¤½¦¡,¦pªG¬O29¤Ñ,²Ä30¤Ñ¬°999,¤è«K­×§ï,28¤Ñ¦P²z
+if(x%%400==0 | (x%%4==0 & x%%100 !=0)){
+  if(y==2){
+    RDateData[i,12]=999;
+  }
+}else{
+  if(y==2){
+    RDateData[i,11]=999;
+    RDateData[i,12]=999;
+  }
+}
+}
+#¦pªG¬O31¤Ñ,«h«á­±¦A·s¼W¤@­Ó­È
+for(i in 1:206){
+  y = RDateData[i,2]  
+  if(y==1|y==3|y==5|y==7|y==8|y==10|y==12){
+    RDateData[i,13]=RDateData[i,12]; 
+  }else{
+    RDateData[i,13]=999
+  }
+}
+#±N¤Ñ¼Æ­×§ï§¹¦¨ªº­È¦s¦¨·sÅÜ¼Æ
+newRDateData = RDateData
+#§â¦~¤ë¥h±¼
+newRDateData[1:2]=list(NULL)
+#±N·s­×§ï¦nªº¤U¦¯¸ê®Æ´À´«±¼­ì¨ÓªºÄæ¦ì(ROW),¦pªG¥X²{NULL¨ú¥N°İÃD¬O¥¿±`ªº
+Revised2[lastweek,] = newRDateData
+#¼g¥XÀÉ®×³Æ¥÷,°O±o¥´¶}¬İ¤@¤UNA©Î999³¡¤À¬O§_¥¿½T
+write.csv(Revised2,file='texfinal.csv')
+#³Æ¥÷¤@­Ó«á¦AÅª¶i¨Ó,ÅªÀÉ®×«e¥ÎEXCEL±N999¨ú¥N¦¨NA
+chainTest = read.csv(header=TRUE,file='texfinal.csv')
+#¨Ì¼ËÀË¬d¤@¤UÄİ©Ê
+str(chainTest)
+#¥h°£µL·N¸qªºÄæ¦ì(¼Æ¦r¶¶§Ç)
+chainTest[,1] = NULL
+#±N©Ò¦³¼Æ­È¸m´«¦¨¤@­Ó¤jªø¦ê¼Æ¦r,¨Ã©¿²¤NA­È
+chain = na.omit(as.vector(t(chainTest)))
+#¼g¥XÀÉ®×,°O±o¦bEXCEL¤W¼ĞÃD¥´²M·¡¤ôªG¤Î¹A·|
+write.csv(chain,file='chain.csv')
 
 
 
