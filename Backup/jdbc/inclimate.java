@@ -46,11 +46,7 @@ public class inclimate {
 					}//System.out.print("\n");				  
 			        pstmt.executeBatch();					
 			
-			/*
-			pstmt = conn.prepareStatement("SELECT * FROM weather");
-			ResultSet rs = pstmt.executeQuery();
-			ResultSetMetaData rsmd = rs.getMetaData();
-			*/		
+		
 			
 			
 		}catch(IOException i){i.printStackTrace();}
