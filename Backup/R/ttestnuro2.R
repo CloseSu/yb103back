@@ -90,4 +90,16 @@ accuracy <- sum(testingtarget == round(results$net.result))/length(testingtarget
 sprintf("%.2f%%", accuracy * 100)
 
 
+new.output <- compute(net.model,
+                      covariate=matrix(c(1,0,0,0,0,0,0,0,
+                                         0,1,0,0,0,0,0,0,
+                                         0,0,1,0,0,0,0,0,
+                                         0,0,0,1,0,0,0,0,
+                                         0,0,0,0,1,0,0,0,
+                                         0,0,0,0,0,1,0,0,
+                                         0,0,0,0,0,0,1,0,
+                                         0,0,0,0,0,0,0,1
+                      ),
+                      byrow=TRUE, ncol=8))
 
+new.output$net.result
