@@ -28,7 +28,8 @@ datacombine2[,1:5]=list(NULL)
 head(datacombine2)
 write.xlsx(datacombine2,file="datacombine2.xlsx")
 
-datacombine3 = read.xlsx(header=TRUE,file='datacombine2.xlsx',sheetIndex=1)
+datacombine2 = read.xlsx(header=TRUE,file='datacombine2.xlsx',sheetIndex=1)
+datacombine2[,1]=NULL
 
 datacombine2[,1] = (datacombine2[,1]-min(datacombine2[,1])) /(max(datacombine2[,1])-min(datacombine2[,1]))
 datacombine2[,2] = (datacombine2[,2]-min(datacombine2[,2])) /(max(datacombine2[,2])-min(datacombine2[,2]))
