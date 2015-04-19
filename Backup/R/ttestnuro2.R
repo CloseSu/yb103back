@@ -28,8 +28,7 @@ datacombine2[,1:5]=list(NULL)
 head(datacombine2)
 write.xlsx(datacombine2,file="datacombine2.xlsx")
 
-datacombine2 = read.xlsx(header=TRUE,file='datacombine2.xlsx',sheetIndex=1)
-datacombine2[,1]=NULL
+datacombine3 = read.xlsx(header=TRUE,file='datacombine2.xlsx',sheetIndex=1)
 
 datacombine2[,1] = (datacombine2[,1]-min(datacombine2[,1])) /(max(datacombine2[,1])-min(datacombine2[,1]))
 datacombine2[,2] = (datacombine2[,2]-min(datacombine2[,2])) /(max(datacombine2[,2])-min(datacombine2[,2]))
@@ -90,16 +89,4 @@ accuracy <- sum(testingtarget == round(results$net.result))/length(testingtarget
 sprintf("%.2f%%", accuracy * 100)
 
 
-new.output <- compute(net.model,
-                      covariate=matrix(c(1,0,0,0,0,0,0,0,
-                                         0,1,0,0,0,0,0,0,
-                                         0,0,1,0,0,0,0,0,
-                                         0,0,0,1,0,0,0,0,
-                                         0,0,0,0,1,0,0,0,
-                                         0,0,0,0,0,1,0,0,
-                                         0,0,0,0,0,0,1,0,
-                                         0,0,0,0,0,0,0,1
-                      ),
-                      byrow=TRUE, ncol=8))
 
-new.output$net.result
