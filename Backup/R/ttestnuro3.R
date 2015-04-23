@@ -29,12 +29,16 @@ corAvgPriceProductionPrice = cor(market_banana$avg_price,banana_production_price
 
 library(xlsx)
 
-install.packages('rJava', repos='http://www.rforge.net/') # è£ rjJavaæ™‚æœ‰å•é¡Œ,æ‰€ä»¥å¯«é€™å€‹ç¨‹å¼
+install.packages('rJava', repos='http://www.rforge.net/') # è£? rjJava??‚æ?‰å?é??,??€ä»¥å¯«?€™å€‹ç?‹å??
 Sys.getenv("JAVA_HOME")
 if (Sys.getenv("JAVA_HOME")!="")
   Sys.setenv(JAVA_HOME="")
 
 priceMerge = merge(banana_production_price,market_banana,by.x='date',all.x=TRUE)
+priceMergev2 = merge(priceMerge,price_index,by.x='date',all.x=TRUE)
+priceMergev3 = merge(priceMergev2,weather,by.x='date',all.x=TRUE)
+
+
 write.xlsx(priceMerge,file='priceMerge.xlsx')
 
 priceMerge2 = na.omit(priceMerge)
@@ -45,7 +49,7 @@ head(priceMerge2)
 
 str(weather)
 
-productionBanana= production[production$fruits=='é¦™è•‰',]
+productionBanana= production[production$fruits=='­»¿¼',]
 
 
 plot(productionBanana$production_total~productionBanana$year,
