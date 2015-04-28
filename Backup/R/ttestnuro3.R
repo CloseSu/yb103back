@@ -1,0 +1,116 @@
+library("neuralnet") 
+
+library(RODBC);
+channel = odbcConnect("agriculture", uid="sa", pwd="passw0rd");
+market_banana = sqlQuery(channel, "select * from market_banana");
+banana_production_price = sqlQuery(channel, "select * from banana_production_price");
+price_index = sqlQuery(channel, "select * from price_index");
+production = sqlQuery(channel, "select * from production");
+typhoon = sqlQuery(channel, "select * from typhoon");
+weather = sqlQuery(channel, "select * from weather");
+close(channel);
+
+str(market_banana)
+str(banana_production_price)
+str(price_index)
+str(production)
+str(weather)
+#str(typhoon)
+
+summary(market_banana)
+summary(banana_production_price)
+summary(price_index)
+summary(production)
+summary(weather)
+
+corAvgPriceTrade = cor(market_banana$avg_price,market_banana$trade) 
+corAvgPriceProductionPrice = cor(market_banana$avg_price,banana_production_price$priceWufeng)
+
+
+library(xlsx)
+
+install.packages('rJava', repos='http://www.rforge.net/') # Ë£? rjJava??ÇÊ?âÂ?èÈ??,??Ä‰ª•ÂØ´?ÄôÂÄãÁ?ãÂ??
+Sys.getenv("JAVA_HOME")
+if (Sys.getenv("JAVA_HOME")!="")
+  Sys.setenv(JAVA_HOME="")
+
+priceMerge = merge(banana_production_price,market_banana,by.x='date',all.x=TRUE)
+priceMergev2 = merge(priceMerge,price_index,by.x='date',all.x=TRUE)
+priceMergev3 = merge(priceMergev2,weather,by.x='date',all.x=TRUE)
+
+
+write.xlsx(priceMerge,file='priceMerge.xlsx')
+
+priceMerge2 = na.omit(priceMerge)
+write.xlsx(priceMerge2,file='priceMerge2.xlsx')
+str(priceMerge2)
+head(priceMerge2)
+
+
+str(weather)
+
+productionBanana= production[production$fruits=='≠ªøº',]
+
+
+plot(productionBanana$production_total~productionBanana$year,
+     xlab = "Date",
+     ylab = "production_total",    
+     type ="l"
+)
+######################################################
+plot(weather$air_temp~weather$date,
+     xlab = "Date",
+     ylab = "sun",    
+     type ="l"
+)
+plot(weather$RH~weather$date,
+     xlab = "Date",
+     ylab = "sun",    
+     type ="l"
+)
+plot(weather$precp_da~weather$date,
+      xlab = "Date",
+      ylab = "sun",    
+      type ="l"
+)
+plot(weather$ sun~weather$date,
+     xlab = "Date",
+     ylab = "sun",    
+     type ="l"
+)
+plot(weather$solar_rad~weather$date,
+     xlab = "Date",
+     ylab = "sun",    
+     type ="l"
+)
+plot(weather$dew_point~weather$date,
+     xlab = "Date",
+     ylab = "sun",    
+     type ="l"
+)
+##############################
+plot(market_banana$trade~market_banana$date,
+     xlab = "Date",
+     ylab = "fruit_original",    
+     type ="l"
+)
+
+plot(price_index$fruit_original~price_index$date,
+     xlab = "Date",
+     ylab = "fruit_original",    
+     type ="l"
+)
+
+plot(priceMerge2$avg_price~priceMerge2$date,
+     xlab = "Date",
+     ylab = "price",    
+     type ="l"
+     )
+
+plot(priceMerge2$priceWufeng~priceMerge2$date,
+     xlab = "Date",
+     ylab = "price",    
+     type ="l"
+)
+
+
